@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor Español-Quechua</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Traductor Español-Quechua</h1>
+        <form id="translate-form">
+            <textarea id="input-text" placeholder="Escribe el texto en español aquí..."></textarea>
+            <button type="submit">Traducir</button>
+        </form>
+        <div id="output-text" class="output"></div>
+    </div>
+
+    <script>
+        document.getElementById('translate-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('input-text').value;
+            const response = await fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            document.getElementById('output-text').innerText = result.translated_text;
+        });
+    </script>
+</body>
+</html>
